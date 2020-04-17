@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import Phaser from 'phaser';
 import { MainScene } from './main-scene';
+import { SettingsMenu } from './settings-menu';
 
 @Component({
   selector: 'app-game',
-  templateUrl: './game.component.html',
-  styleUrls: ['./game.component.css']
+  template: ''
 })
 export class GameComponent implements OnInit {
   phaserGame: Phaser.Game;
@@ -15,8 +15,7 @@ export class GameComponent implements OnInit {
       type: Phaser.AUTO,
       height: 600,
       width: 800,
-      backgroundColor: "#18216D",
-      scene: [ MainScene ],
+      scene: [MainScene, SettingsMenu],
       parent: 'gameContainer',
       physics: {
         default: 'arcade',
