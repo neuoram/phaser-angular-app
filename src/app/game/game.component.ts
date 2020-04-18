@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import Phaser from 'phaser';
-//import { MainScene } from './main-scene';
-//import { SettingsMenu } from './settings-menu';
 import { PlayGame } from './scenes/play-game';
 
 @Component({
@@ -26,22 +24,9 @@ export class GameComponent implements OnInit {
           default: 'arcade'
       },
       scene: [PlayGame]
-
-      // type: Phaser.AUTO,
-      // height: 600,
-      // width: 800,
-      // scene: [MainScene, SettingsMenu],
-      // parent: 'gameContainer',
-      // physics: {
-      //   default: 'arcade',
-      //   arcade: {
-      //     gravity: { y: 100 }
-      //   }
-      // }
     };
   }
   ngOnInit() {
     this.phaserGame = new Phaser.Game(this.config);
-    //window.focus();
   }
 }
