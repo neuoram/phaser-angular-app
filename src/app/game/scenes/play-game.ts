@@ -1,25 +1,5 @@
-
-// window.onload = function() {
-//     let gameConfig = {
-//         type: Phaser.AUTO,
-//         backgroundColor:0x87ceeb,
-//         scale: {
-//             mode: Phaser.Scale.FIT,
-//             autoCenter: Phaser.Scale.CENTER_BOTH,
-//             parent: 'thegame',
-//             width: 750,
-//             height: 500
-//         },
-//         physics: {
-//             default: 'arcade'
-//         },
-//         scene: PlayGame
-//     }
-//     game = new Phaser.Game(gameConfig);
-//     window.focus();
-// }
-
 export class PlayGame extends Phaser.Scene{
+
     obstacleGroup: Phaser.Physics.Arcade.Group;
     firstBounce: number;
     ground: Phaser.Physics.Arcade.Sprite;
@@ -27,11 +7,12 @@ export class PlayGame extends Phaser.Scene{
     score: number;
     topScore: string | number;
     scoreText: Phaser.GameObjects.Text;
+    obstacle: any;
 
     game;
     gameOptions = {
     bounceHeight: 300,
-    ballGravity: 1200,
+    ballGravity: 200,
     ballPower: 1200,
     obstacleSpeed: 250,
     obstacleDistanceRange: [100, 250],
@@ -55,10 +36,10 @@ export class PlayGame extends Phaser.Scene{
         this.ball.setBounce(1);
         this.ball.setCircle(25);
         let obstacleX = this.game.config.width;
-        for(let i = 0; i < 10; i++){
-            let obstacle = this.obstacleGroup.create(obstacleX, this.ground.getBounds().top, 'obstacle');
-            obstacle.setOrigin(0.5, 1);
-            obstacle.setImmovable(true);
+        for(let i = 0; i < 200; i++){ //nbr obstacle
+            this.obstacle = this.obstacleGroup.create(obstacleX, this.ground.getBounds().top, 'obstacle');
+            this.obstacle.setOrigin(0.5, 1);
+            this.obstacle.setImmovable(true);
             obstacleX += Phaser.Math.Between(this.gameOptions.obstacleDistanceRange[0], this.gameOptions.obstacleDistanceRange[1])
         }
         this.obstacleGroup.setVelocityX(-this.gameOptions.obstacleSpeed);
@@ -80,7 +61,7 @@ export class PlayGame extends Phaser.Scene{
     getRightmostObstacle(){
         let rightmostObstacle = 0;
         this.obstacleGroup.getChildren().forEach(function(obstacle){
-            rightmostObstacle = Math.max(rightmostObstacle, this.obstacle.x);
+            rightmostObstacle = Math.max(rightmostObstacle, this.obstacle.x);//'obstacle' of undefined
         });
         return rightmostObstacle;
     }
@@ -94,9 +75,10 @@ export class PlayGame extends Phaser.Scene{
             }
         }, null, this);
         this.physics.world.collide(this.ball, this.obstacleGroup, function(){
-            localStorage.setItem(this.gameOptions.localStorageName, this.Math.max(this.score, this.topScore));
+            localStorage.setItem(this.gameOptions.localStorageName, Math.max(this.score, this.topScore).toString());
             this.scene.start('PlayGame');
         }, null, this);
+
         this.obstacleGroup.getChildren().forEach(function(obstacle){
             if(this.obstacle.getBounds().right < 0){
                 this.updateScore(1);
